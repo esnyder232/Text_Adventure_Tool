@@ -1,0 +1,22 @@
+Room: [
+{
+	vName: start,
+	uid: 1,
+	connections:[
+		{
+			vFrom: start,
+			vTo: orb,
+			vKeyword: north,
+			vDescription: "You go north."
+		}
+	],
+	items: [
+		{
+			item: skull,
+			itemId: 1
+		}
+	]
+	
+}
+
+]

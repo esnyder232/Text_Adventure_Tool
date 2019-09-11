@@ -1,0 +1,335 @@
+<template>
+  <section class="au-animate">
+    <div class="panel">
+      <div class="panelHeader">
+        <div class="panelHeaderLabel">
+          Text Adventure Tool
+        </div>
+        <div class="panelHeaderControls">
+          <input class="panelControl" type="button" value="New" click.delegate="newDetails()" />
+          <input class="panelControl" type="button" value="Save" click.delegate="saveDetails()"/>
+          <input class="panelControl" type="button" value="Load" click.delegate="loadExternalData()"/>
+          <input type="file" id="externalFileButton" style="display:none;" onclick="this.value=null;" change.delegate="readExternalFile($event)"/>
+          <a id="saveLink" style="display:none;" href.bind="saveFile" download.bind="saveFileName">Download File HEre</a>
+        </div>
+      </div>
+
+      <div class="panelSection100">
+        <div class="sectionHeader">
+          General Data
+        </div>
+        <div class="sectionBody">
+          <div class="element25">
+            <div class="elementLabel">
+              Game Name
+            </div>
+            <div class="elementValue">
+              <input class="elementInput" value.bind="main.vName" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panelSection100">
+        <div class="sectionHeader">
+          <div class="sectionTableHeaderLabel">
+              Rooms
+          </div>
+          <div class="sectionTableControls">              
+            <input class="sectionTableControlInput" type="button" value="Add Room"
+              click.delegate="addGenericDetail(main.rooms, {bShowDetails: true, roomConnections:[],roomItems: [],itemInteractions: []})" />
+          </div>
+        </div>
+        <div class="sectionBody">
+          <div class="sectionTableDiv">
+            <table class="textAdventureTable"
+              aurelia-table="data.bind: main.rooms; display-data.bind: $displayDataRooms">
+              <thead>
+                <tr>
+                  <th style="width:5%"></th>
+                  <th style="width:15%" aut-sort="key: vName">Room Name</th>
+                  <th style="width:70%" aut-sort="key: vDescription">Room Desctiption</th>
+                  <th style="width:10%">Action</th>
+                </tr>
+              </thead>
+              <tbody repeat.for="r of $displayDataRooms" change.delegate="r.isDirty = 1">
+                <tr>
+                  <td><input type="button" value="Expand" click.delegate="toggleShowDetails(r)" /></td>
+                  <td><input type="text" class="tableDetailInput" value.bind="r.vName" change.delegate="roomNameChanged(r)"/></td>
+                  <td><input type="text" class="tableDetailInput" value.bind="r.vDescription"/></td>
+                  <td>
+                    <div class="deleteDetail" click.delegate="deleteGenericDetail(main.rooms, r)">Delete</div>
+                    <div show.bind="r.action == 'I'" class="markedForInsert">(New)</div>
+                    <div show.bind="r.action == 'D'" class="markedForDelete">(Del)</div>
+                    <div show.bind="r.isDirty == 1 && r.action == 'U'" class="markedForUpdate">(Upd)</div>
+                  </td>
+                </tr>
+                <tr show.bind="r.bShowDetails">
+                  <td colspan="4" class="sectionTableDetail">
+                    <div class="sectionTableDetailDiv">
+                      <div class="sectionTableDetailDivBody">
+                        <div class="panelSectionRow">
+                          <div class="panelSection50">
+                            <div class="sectionTableHeader">
+                              <div class="sectionTableHeaderLabel">
+                                Room Connections
+                              </div>
+                              <div class="sectionTableControls">              
+                                  <input class="sectionTableControlInput" type="button" value="Add Connection" click.delegate="addGenericDetail(r.roomConnections, {vRoom:r.vName})"/>
+                              </div>
+                            </div>
+                            <div class="sectionBody">
+                              <div class="sectionTableDiv">
+                                <table class="textAdventureTable" aurelia-table="data.bind: r.roomConnections; display-data.bind: $displayDataRoomsConnections">
+                                  <thead>
+                                    <tr>
+                                      <th style="width:20%" aut-sort="key: vRoom">From Room</th>
+                                      <th style="width:20%" aut-sort="key: vToRoom">To Room</th>
+                                      <th style="width:10%" aut-sort="key: vKeyword">Keyword</th>
+                                      <th style="width:30%" aut-sort="key: vDescription">Description</th>
+                                      <th style="width:20%">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr repeat.for="rc of $displayDataRoomsConnections" change.delegate="rc.isDirty = 1">
+                                      <td>
+                                        <input class="tableDetailInput" disabled value.bind="rc.vRoom" />
+                                      </td>
+                                      <td>
+                                        <input class="tableDetailInput" value.bind="rc.vToRoom" />
+                                      </td>
+                                      <td>
+                                          <input class="tableDetailInput" value.bind="rc.vKeyword" />
+                                      </td>
+                                      <td>
+                                          <input class="tableDetailInput" value.bind="rc.vDescription" />
+                                      </td>
+                                      <td>                    
+                                        <div class="deleteDetail" click.delegate="deleteGenericDetail(r.roomConnections, rc)">Delete</div>
+                                        <div show.bind="rc.action == 'I'" class="markedForInsert">(New)</div>
+                                        <div show.bind="rc.action == 'D'" class="markedForDelete">(Del)</div>
+                                        <div show.bind="rc.isDirty == 1 && rc.action == 'U'" class="markedForUpdate">(Upd)</div>
+                                      </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="panelSection50">
+                            <div class="sectionTableHeader">
+                              <div class="sectionTableHeaderLabel">
+                                Room Items
+                              </div>
+                              <div class="sectionTableControls">              
+                                  <input class="sectionTableControlInput" type="button" value="Add Connection" click.delegate="addGenericDetail(r.roomItems, {vRoom:r.vName})"/>
+                              </div>
+                            </div>
+                            <div class="sectionBody">
+                              <div class="sectionTableDiv">
+                                <table class="textAdventureTable" aurelia-table="data.bind: r.roomItems; display-data.bind: $displayDataRoomItems">
+                                  <thead>
+                                    <tr>
+                                      <th style="width:80%" aut-sort="key: vName">Item</th>
+                                      <th style="width:20%">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr repeat.for="ri of $displayDataRoomItems" change.delegate="ri.isDirty = 1">
+                                      <td>
+                                          <input class="tableDetailInput" value.bind="ri.vName" />
+                                      </td>
+                                      <td>
+                                        <div class="deleteDetail" click.delegate="deleteGenericDetail(r.roomItems, ri)">Delete</div>
+                                        <div show.bind="ri.action == 'I'" class="markedForInsert">(New)</div>
+                                        <div show.bind="ri.action == 'D'" class="markedForDelete">(Del)</div>
+                                        <div show.bind="ri.isDirty == 1 && ri.action == 'U'" class="markedForUpdate">(Upd)</div>
+                                      </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="panelSection50">
+                          <div class="sectionTableHeader">
+                            <div class="sectionTableHeaderLabel">
+                              Item Interactions
+                            </div>
+                            <div class="sectionTableControls">              
+                                <input class="sectionTableControlInput" type="button" value="Add Connection" click.delegate="addGenericDetail(r.itemInteractions, {vRoom:r.vName})"/>
+                            </div>
+                          </div>
+                          <div class="sectionBody">
+                            <div class="sectionTableDiv">
+                              <table class="textAdventureTable" aurelia-table="data.bind: r.itemInteractions; display-data.bind: $displayDataitemInteractions">
+                                <thead>
+                                  <tr>
+                                    <th style="width:25%" aut-sort="key: vName">Item</th>
+                                    <th style="width:25%" aut-sort="key: vAction">Action</th>
+                                    <th style="width:25%" aut-sort="key: vToRoom">Room To</th>
+                                    <th style="width:25%">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr repeat.for="rint of $displayDataitemInteractions" change.delegate="rint.isDirty = 1">
+                                    <td>
+                                      <input class="tableDetailInput" value.bind="rint.vName" />
+                                    </td>
+                                    <td>
+                                      <input class="tableDetailInput" value.bind="rint.vAction" />
+                                    </td>
+                                    <td>
+                                        <input class="tableDetailInput" value.bind="rint.vToRoom" />
+                                    </td>
+                                    <td>                    
+                                      <div class="deleteDetail" click.delegate="deleteGenericDetail(r.itemInteractions, rint)">Delete</div>
+                                      <div show.bind="rint.action == 'I'" class="markedForInsert">(New)</div>
+                                      <div show.bind="rint.action == 'D'" class="markedForDelete">(Del)</div>
+                                      <div show.bind="rint.isDirty == 1 && rint.action == 'U'" class="markedForUpdate">(Upd)</div>
+                                    </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+  
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panelSection100">
+        <div class="sectionHeader">
+          <div class="sectionTableHeaderLabel">
+            Items
+          </div>
+          <div class="sectionTableControls">              
+            <input class="sectionTableControlInput" type="button" value="Add Item"
+              click.delegate="addGenericDetail(main.items, {bShowDetails: true, interactions:[]})" />
+          </div>
+        </div>
+
+        <div class="sectionBody">
+          <div class="sectionTableDiv">
+            <table class="textAdventureTable"
+              aurelia-table="data.bind: main.items; display-data.bind: $displayDataItems">
+              <thead>
+                <tr>
+                  <th style="width:5%"></th>
+                  <th style="width:25%" aut-sort="key: vName">Name</th>
+                  <th style="width:60%" aut-sort="key: vName">Description</th>
+                  <th style="width:10%">Action</th>
+                </tr>
+              </thead>
+              <tbody repeat.for="r of $displayDataItems" change.delegate="r.isDirty = 1">
+                <tr>
+                  <td><input type="button" value="Expand" click.delegate="toggleShowDetails(r)" /></td>
+                  <td><input type="text" class="tableDetailInput" value.bind="r.vName"/></td>
+                  <td><input type="text" class="tableDetailInput" value.bind="r.vDescription"/></td>
+                  <td>
+                    <div class="deleteDetail" click.delegate="deleteGenericDetail(main.items, r)">Delete</div>
+                    <div show.bind="r.action == 'I'" class="markedForInsert">(New)</div>
+                    <div show.bind="r.action == 'D'" class="markedForDelete">(Del)</div>
+                    <div show.bind="r.isDirty == 1 && r.action == 'U'" class="markedForUpdate">(Upd)</div>
+                  </td>
+                </tr>
+                <tr show.bind="r.bShowDetails">
+                  <td colspan="4" class="sectionTableDetail">
+                    <div class="sectionTableDetailDiv">
+                      <div class="sectionTableDetailDivBody">
+                        <div class="panelSection100">
+                          <div class="sectionTableHeader">
+                            <div class="sectionTableHeaderLabel">
+                              Interactions
+                            </div>
+                            <div class="sectionTableControls">
+                                <input class="sectionTableControlInput" type="button" value="Add Interaction" click.delegate="addGenericDetail(r.interactions, {vItemName:r.vName})"/>
+                            </div>
+                          </div>
+                          <div class="sectionBody">
+                            <div class="sectionTableDiv">
+                              <table class="textAdventureTable" aurelia-table="data.bind: r.interactions; display-data.bind: $displayDataItemInteractions">
+                                <thead>
+                                  <tr>
+                                    <th style="width:20%" aut-sort="key: vKeyword">Keyword</th>
+                                    <th style="width:60%" aut-sort="key: vDescription">Description</th>
+                                    <th style="width:20%">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr repeat.for="rii of $displayDataItemInteractions" change.delegate="rii.isDirty = 1">
+                                    <td>
+                                        <input class="tableDetailInput" value.bind="rii.vKeyword" />
+                                    </td>
+                                    <td>
+                                        <input class="tableDetailInput" value.bind="rii.vDescription" />
+                                    </td>
+                                    <td>                    
+                                      <div class="deleteDetail" click.delegate="deleteGenericDetail(r.interactions, rii)">Delete</div>
+                                      <div show.bind="rii.action == 'I'" class="markedForInsert">(New)</div>
+                                      <div show.bind="rii.action == 'D'" class="markedForDelete">(Del)</div>
+                                      <div show.bind="rii.isDirty == 1 && rii.action == 'U'" class="markedForUpdate">(Upd)</div>
+                                    </td>
+                                  </tr>
+                                  </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+  
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panelSection50">
+        <div class="sectionHeader">
+          <div class="sectionTableHeaderLabel">
+            Player Actions
+          </div>
+          <div class="sectionTableControls">              
+            <input class="sectionTableControlInput" type="button" value="Add Action" click.delegate="addGenericDetail(main.playerActions)" />
+          </div>
+        </div>
+        <div class="sectionBody">
+          <div class="sectionTableDiv">
+            <table class="textAdventureTable" aurelia-table="data.bind: main.playerActions; display-data.bind: $displayDataPlayerActions">
+              <thead>
+                <tr>
+                  <th style="width:80%" aut-sort="key: vKeyword">Keyword</th>
+                  <th style="width:20%">Action</th>
+                </tr>
+              </thead>
+              <tbody repeat.for="r of $displayDataPlayerActions" change.delegate="r.isDirty = 1">
+                <tr>
+                  <td><input type="text" class="tableDetailInput" value.bind="r.vKeyword"/></td>
+                  <td>
+                    <div class="deleteDetail" click.delegate="deleteGenericDetail(main.playerActions, r)">Delete</div>
+                    <div show.bind="r.action == 'I'" class="markedForInsert">(New)</div>
+                    <div show.bind="r.action == 'D'" class="markedForDelete">(Del)</div>
+                    <div show.bind="r.isDirty == 1 && r.action == 'U'" class="markedForUpdate">(Upd)</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

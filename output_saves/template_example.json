@@ -1,0 +1,92 @@
+{
+	vName: asdf,
+	rooms: [
+	{
+		vName: start,
+		uid: 1,
+		vRoomDescription: "Starting room description here."
+		roomConnections:[
+			{
+				vRoom: start,
+				vTo: orb,
+				vKeyword: north,
+				vDescription: "You see a door to the north."
+			}
+		],
+		roomItems: [
+			{
+				item: skull,
+				itemId: 1
+			}
+		],
+		itemInteractions: [
+			{
+				vName: skull,
+				vAction: use,
+				vTo: orb open
+			}
+		]
+	},{	
+	...	
+	}],
+	
+	items: [
+	{
+		uid: 1,
+		vName: skull,
+		interactions: [
+			{
+				uid: 1,
+				vKeyword: examine,
+				vDescription: "The skull is black."
+			},
+			{
+				uid: 2,
+				vKeyword: take,
+				vDescription: ""
+			},
+			{
+				uid: 3,
+				vKeyword: use,
+				vDescription: ""
+			}
+		]
+	},{
+		uid: 2,
+		vName: painting,
+		interactions:[...]
+	},{
+	...
+	}],
+	
+	player: 
+	{
+		actions: [
+			{
+				uid: 1,
+				vKeyword: go
+			},
+			{
+				uid: 2,
+				vKeyword: inventory
+			},
+			{
+				uid: 3,
+				vKeyword: examine
+			},
+			{
+				uid: 2,
+				vKeyword: take
+			},
+			{
+				uid: 3,
+				vKeyword: use
+			}
+		]
+	}
+	
+	
+	
+	
+	
+]}

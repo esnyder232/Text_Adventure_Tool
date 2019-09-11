@@ -1,0 +1,199 @@
+.panel {
+    width: 100%;
+    float: left;
+    border: 1px solid black;
+}
+
+.panelHeader {
+    width: 100%;
+    float: left;
+    background-color:lightblue;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.panelHeaderLabel {
+    width: 100%;
+    float: left;
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.panelHeaderControls {
+    width: 100%;
+    float: left;
+}
+
+input.panelControl {
+    font-size: 24px;
+    padding: 1em;
+}
+
+input.sectionTableControlInput {
+    padding: 0.5em;
+}
+
+.tableDetailInput {
+    float:left;
+    width:100%;
+}
+
+.panelSectionRow {
+    width:100%;
+    float:left;
+}
+
+.panelSection100 {
+    width: 98%;
+    float: left;
+    padding: 0.5% 1% 0.5% 1%;
+}
+
+.panelSection50 {
+    width: 48%;
+    float: left;
+    padding: 0.5% 1% 0.5% 1%;
+}
+
+
+.sectionHeader {
+    width: 100%;
+    float: left;
+    font-size: 24px;
+}
+
+.sectionBody {
+    width: 98%;
+    padding: 0.5% 1% 1% 1%;
+    font-size: 20px;
+    float: left;
+    border-bottom:1px solid gray;
+}
+
+.element25 {
+    float:left;
+    width: 23%;
+    padding: 0.5% 1% 0.5% 1%
+}
+
+.element50 {
+    float:left;
+    width: 48%;
+    padding: 0.5% 1% 0.5% 1%
+}
+
+.element75 {
+    float:left;
+    width: 73%;
+    padding: 0.5% 1% 0.5% 1%
+}
+
+.element100 {
+    float:left;
+    width: 98%;
+    padding: 0.5% 1% 0.5% 1%
+}
+
+.elementLabel {
+    width: 100%;
+    float: left;
+}
+
+.elementValue {
+    width:100%;
+    float: left;
+}
+
+.elementInput {
+    width:100%;
+    float: left;
+}
+
+table.textAdventureTable {
+    width:100%;
+    float:left;
+    border: 1px solid gray;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+.textAdventureTable th {
+    background-color:lightgray;
+    text-align: center;
+    border:1px solid darkgray;
+    border-collapse: collapse;
+}
+
+.textAdventureTable td {
+    background-color:white;
+    border-style: solid;
+    border-color: darkgray;
+    border-width: 1px;
+    border-collapse: collapse;
+    padding: 8px 1% 8px 1%;
+}
+
+.textAdventureTable td.sectionTableDetail {
+    padding:0px;
+}
+
+.sectionTableDetailDiv {
+    width: 100%;
+    float:left;
+    background-color: gray;
+}
+
+.sectionTableDetailDivBody {
+    margin:0% 4% 0% 4%;
+    width: 92%;
+    float:left;
+    height: 100%;
+    background-color: beige
+}
+
+.sectionTableHeader {
+    width:100%;
+    float:left;
+}
+
+.sectionTableHeaderLabel {
+    width:50%;
+    float:left;
+    text-align: left;
+}
+
+.sectionTableControls {
+    width:50%;
+    float:right;
+    text-align: right;    
+}
+
+.hyperlink {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.deleteDetail {
+    float:left;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.markedForInsert {
+    color: green;
+    float:left;
+}
+
+.markedForUpdate {
+    color: orange;
+    float:left;
+}
+
+.markedForDelete {
+    color: red;
+    float:left;
+}
+
+
